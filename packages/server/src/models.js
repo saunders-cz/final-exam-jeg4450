@@ -10,6 +10,7 @@ Meal.init(
   {
     id: { type: INTEGER, autoIncrement: true, primaryKey: true },
     title: { type: STRING, allowNull: false },
+    imgsrc: { type: STRING, allowNull: false },
     description: { type: STRING, allowNull: false },
     price: { type: FLOAT, allowNull: false },
   },

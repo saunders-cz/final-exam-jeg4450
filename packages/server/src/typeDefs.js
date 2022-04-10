@@ -13,10 +13,12 @@ export const typeDefs = gql`
   type Category {
     id: ID!
     title: String!
+    meals: [Meal]
   }
 
   type Query {
     meals: [Meal]
     meal(id: ID!): Meal
+    categories: [Category]
   }
 `;
