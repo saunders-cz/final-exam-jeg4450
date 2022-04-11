@@ -1,5 +1,3 @@
-# MGIS 445 Demo: Class 9 - GraphQL Demo
+# MGIS 445 Demo: Class 11 - Writing Data with GraphQL
 
-## This is the completed state of the 3/28 demo of creating a GraphQL Server
-
-[Open Worskpace in GitPod](https://gitpod.io/#https://github.com/ritcz/class9-demo-complete)
+Fork this repository and open it in GitPod
