@@ -5,10 +5,13 @@ export const resolvers = {
     meals: async (parent, args) => {
       return await Meal.findAll({
         include: Category,
+        order: [["title", "ASC"]],
       });
     },
     meal: async (parent, args) => {
-      return await Meal.findByPk(args.id, { include: Category });
+      return await Meal.findByPk(args.id, {
+        include: Category,
+      });
     },
     categories: async () => {
       return await Category.findAll({ include: Meal });

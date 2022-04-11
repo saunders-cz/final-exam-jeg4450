@@ -8,7 +8,11 @@ class Meal extends Model {}
 
 Meal.init(
   {
-    id: { type: INTEGER, autoIncrement: true, primaryKey: true },
+    id: {
+      type: INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
     title: { type: STRING, allowNull: false },
     imgsrc: { type: STRING, allowNull: false },
     description: { type: STRING, allowNull: false },
