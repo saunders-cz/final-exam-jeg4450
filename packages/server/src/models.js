@@ -1,12 +1,12 @@
 import { Model, DataTypes } from "sequelize";
 import { dbConnection } from "./connection.js";
-import { meals, categories } from "../data/meals.js";
+import { books, categories } from "../data/Books.js";
 
 const { STRING, INTEGER, FLOAT } = DataTypes;
 
-class Meal extends Model {}
+class Book extends Model {}
 
-Meal.init(
+Book.init(
   {
     id: {
       type: INTEGER,
@@ -15,14 +15,16 @@ Meal.init(
     },
     title: { type: STRING, allowNull: false },
     imgsrc: { type: STRING, allowNull: false },
+    publisher: { type: STRING, allowNull: false },
+    author: { type: STRING, allowNull: false },
     description: { type: STRING, allowNull: false },
     price: { type: FLOAT, allowNull: false },
   },
   {
     sequelize: dbConnection,
     name: {
-      singular: "meal",
-      plural: "meals",
+      singular: "book",
+      plural: "books",
     },
   }
 );
@@ -44,18 +46,18 @@ Category.init(
 );
 
 // Define our associations
-Meal.belongsTo(Category);
-Category.hasMany(Meal);
+Book.belongsTo(Category);
+Category.hasMany(Book);
 
 await dbConnection.sync({ force: true });
 
 // seed the database!
 await Category.bulkCreate(categories);
-await Meal.bulkCreate(
-  meals.map((m) => {
-    const { id, ...meal } = m;
-    return meal;
+await Book.bulkCreate(
+  books.map((m) => {
+    const { id, ...book } = m;
+    return book;
   })
 );
 
-export { Meal, Category };
+export { Book, Category };

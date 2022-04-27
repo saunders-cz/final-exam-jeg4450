@@ -1,10 +1,12 @@
 import { gql } from "@apollo/client";
-export const GET_MEALS = gql`
-  query GET_MEALS {
-    meals {
+export const GET_BOOKS = gql`
+  query GET_BOOKS {
+    books {
       id
       title
       description
+      publisher
+      author
       imgsrc
       price
       categoryId
@@ -16,11 +18,13 @@ export const GET_MEALS = gql`
   }
 `;
 
-export const GET_MEAL = gql`
-  query GET_MEAL($id: ID!) {
-    meal(id: $id) {
+export const GET_BOOK = gql`
+  query GET_BOOK($id: ID!) {
+    book(id: $id) {
       title
       description
+      publisher
+      author
       imgsrc
       price
       categoryId

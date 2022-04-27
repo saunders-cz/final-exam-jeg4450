@@ -1,19 +1,31 @@
+import { useMutation } from "@apollo/client";
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import React from "react";
 import * as yup from "yup";
 import { SelectCategory } from "../category/SelectCategory";
+import { ADD_BOOK, UPDATE_BOOK } from "./mutations";
 
 const fieldStyle = { width: 500 };
 
 const validationSchema = yup.object({
   title: yup.string().required().label("Title"),
   description: yup.string().required().label("Description"),
+  publisher: yup.string().required().label("Publisher"),
+  author: yup.string().required().label("Author"),
   price: yup.number().required().label("Price").min(0.25),
   categoryId: yup.string().required().label("Category"),
 });
 
-export const MealForm = ({ id, initialValues, onClose }) => {
+export const BookForm = ({ id, initialValues, onClose }) => {
+  const mutation = id !== undefined ? UPDATE_BOOK : ADD_BOOK;
+  const [saveBook, { loading, error }] = useMutation(mutation, {
+    refetchQueries: ["GET_BOOKS", "GET_BOOK"],
+    onCompleted: () => {
+      if (onClose !== undefined) onClose();
+    },
+  });
+
   const {
     values,
     errors,
@@ -25,8 +37,35 @@ export const MealForm = ({ id, initialValues, onClose }) => {
     initialValues,
     validationSchema,
     onSubmit: async (values) => {
-      console.log(`Meal ID: ${id}`);
+      console.log(`Book ID: ${id}`);
       console.log("Values:", values);
+      const updateBookId = id;
+      console.log("submit ID " + id);
+      const {
+        title,
+        description,
+        publisher,
+        author,
+        imgsrc,
+        categoryId,
+        price,
+      } = values;
+      const input = {
+        title,
+        description,
+        publisher,
+        author,
+        imgsrc,
+        categoryId,
+        price,
+      };
+
+      await saveBook({
+        variables: {
+          updateBookId,
+          input,
+        },
+      });
     },
   });
 
@@ -35,7 +74,7 @@ export const MealForm = ({ id, initialValues, onClose }) => {
       <Grid container spacing={2} direction="column">
         <Grid item>
           <Typography variant="h3">
-            {id !== undefined ? "Edit" : "Add"} Meal
+            {id !== undefined ? "Edit" : "Add"} Book
           </Typography>
         </Grid>
         <Grid item>
@@ -61,6 +100,32 @@ export const MealForm = ({ id, initialValues, onClose }) => {
             onBlur={handleBlur}
             error={!!errors.description}
             helperText={errors.description}
+          />
+        </Grid>
+        <Grid item>
+          <TextField
+            id="publisher"
+            label="Publisher"
+            multiline={true}
+            style={fieldStyle}
+            value={values.publisher}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={!!errors.publisher}
+            helperText={errors.publisher}
+          />
+        </Grid>
+        <Grid item>
+          <TextField
+            id="author"
+            label="Author"
+            multiline={true}
+            style={fieldStyle}
+            value={values.author}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={!!errors.author}
+            helperText={errors.author}
           />
         </Grid>
         <Grid item>
@@ -99,13 +164,16 @@ export const MealForm = ({ id, initialValues, onClose }) => {
             helperText={errors.categoryId}
           />
         </Grid>
-
+        {error && (
+          <Grid item>
+            <Typography>Error: {error.message}</Typography>
+          </Grid>
+        )}
         <Grid item container spacing={2}>
           <Grid item>
-            <Button type="reset">Reset</Button>
-          </Grid>
-          <Grid item>
-            <Button type="submit">Save</Button>
+            <Button type="submit" disabled={loading}>
+              Save
+            </Button>
           </Grid>
         </Grid>
       </Grid>

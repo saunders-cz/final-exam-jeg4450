@@ -2,13 +2,13 @@ import { useQuery } from "@apollo/client";
 import { Typography } from "@mui/material";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { MealForm } from "./MealForm";
-import { GET_MEAL } from "./queries";
+import { BookForm } from "./BookForm";
+import { GET_BOOK } from "./queries";
 
-export const EditMeal = ({ onClose }) => {
+export const EditBook = ({ onClose }) => {
   const params = useParams();
 
-  const { data, loading, error } = useQuery(GET_MEAL, {
+  const { data, loading, error } = useQuery(GET_BOOK, {
     variables: {
       id: params.id,
     },
@@ -18,6 +18,6 @@ export const EditMeal = ({ onClose }) => {
   if (loading) return <Typography>Loading...</Typography>;
 
   return (
-    <MealForm id={params.id} initialValues={data.meal} onClose={onClose} />
+    <BookForm id={params.id} initialValues={data.book} onClose={onClose} />
   );
 };

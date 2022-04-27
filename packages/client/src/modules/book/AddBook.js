@@ -1,12 +1,14 @@
 import React from "react";
-import { MealForm } from "./MealForm";
+import { BookForm } from "./BookForm";
 
-export const AddMeal = ({ onClose }) => {
+export const AddBook = ({ onClose }) => {
   return (
-    <MealForm
+    <BookForm
       initialValues={{
         title: "",
         description: "",
+        publisher: "",
+        author: "",
         price: 0,
         categoryId: "1",
         imgsrc: "",

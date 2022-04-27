@@ -1,53 +1,117 @@
-import React, { useState } from "react";
+import { useQuery } from "@apollo/client";
+import React from "react";
+import { GET_BOOKS } from "../modules/book/queries";
 import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Grid,
+  Icon,
   Typography,
+  Grid,
+  ListItem,
+  ListItemText,
+  CardActions,
+  Button,
+  CardContent,
+  CardMedia,
+  Card,
 } from "@mui/material";
-import { MealTable } from "../modules/meal/MealTable";
-import { useNavigate, useParams } from "react-router-dom";
-import { EditMeal } from "../modules/meal/EditMeal";
-import { AddMeal } from "../modules/meal/AddMeal";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const Home = () => {
+  const { data, loading, error } = useQuery(GET_BOOKS);
   const navigate = useNavigate();
-  const params = useParams();
-  const [showAddMeal, setShowAddMeal] = useState(false);
 
-  const showEditMeal = params.id !== undefined;
+  if (error) return <Typography color="error">{error.message}</Typography>;
+  if (loading) return <Typography>Loading</Typography>;
+
+  const { books } = data;
 
   return (
-    <>
-      <Grid container direction="column">
-        <Grid item>
-          <Typography variant="h2">Meals</Typography>
-        </Grid>
-        <Grid item>
-          <Button onClick={() => setShowAddMeal(true)}>Add Meal</Button>
-        </Grid>
-        <Grid item>
-          <MealTable />
-        </Grid>
+    <Grid container spacing={6}>
+      <Link to={`/admin/`}>Admin</Link>
+      <Grid item spacing={5}>
+        <Typography variant="h4">Classics</Typography>
+        {books.map((item, i) =>
+          item.categoryId === "1" ? (
+            <Card spacing={4} sx={{ maxWidth: 345 }}>
+              <CardMedia
+                component="img"
+                height="140"
+                image={"../img/book-" + item.categoryId + ".png"}
+                alt="Category 1 img"
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  {item.title}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {item.author}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Link to={`/books/${item.id}`}>View Details</Link>
+              </CardActions>
+            </Card>
+          ) : (
+            ""
+          )
+        )}
       </Grid>
-      {showEditMeal && (
-        <Dialog open={true} onClose={() => navigate("/")}>
-          <DialogTitle />
-          <DialogContent>
-            <EditMeal onClose={() => navigate("/")} />
-          </DialogContent>
-        </Dialog>
-      )}
-      {showAddMeal && (
-        <Dialog open={true} onClose={() => setShowAddMeal(false)}>
-          <DialogTitle />
-          <DialogContent>
-            <AddMeal onClose={() => setShowAddMeal(false)} />
-          </DialogContent>
-        </Dialog>
-      )}
-    </>
+      <Grid item>
+        <Typography variant="h4">Fiction</Typography>
+        {books.map((item, i) =>
+          item.categoryId === "2" ? (
+            <Card sx={{ maxWidth: 345 }}>
+              <CardMedia
+                component="img"
+                height="140"
+                image={"../img/book-" + item.categoryId + ".png"}
+                alt="Category 2 img"
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  {item.title}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {item.author}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Link to={`/books/${item.id}`}>View Details</Link>
+              </CardActions>
+            </Card>
+          ) : (
+            ""
+          )
+        )}
+      </Grid>
+      <Grid item>
+        <Typography variant="h4">Non Fiction</Typography>
+        {books.map((item, i) =>
+          item.categoryId === "3" ? (
+            <Card sx={{ maxWidth: 345 }}>
+              <CardMedia
+                component="img"
+                height="140"
+                image={"../img/book-" + item.categoryId + ".png"}
+                alt="Category 2 img"
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  {item.title}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {item.author}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Link to={`/books/${item.id}`}>View Details</Link>
+              </CardActions>
+            </Card>
+          ) : (
+            ""
+          )
+        )}
+      </Grid>
+    </Grid>
   );
 };

@@ -1,20 +1,32 @@
-import { meals } from "../data/meals.js";
-import { Meal, Category } from "./models.js";
+import { Book, Category } from "./models.js";
 export const resolvers = {
   Query: {
-    meals: async (parent, args) => {
-      return await Meal.findAll({
+    books: async (parent, args) => {
+      return await Book.findAll({
         include: Category,
         order: [["title", "ASC"]],
       });
     },
-    meal: async (parent, args) => {
-      return await Meal.findByPk(args.id, {
+    book: async (parent, args) => {
+      return await Book.findByPk(args.id, {
         include: Category,
       });
     },
     categories: async () => {
-      return await Category.findAll({ include: Meal });
+      return await Category.findAll({ include: Book });
+    },
+  },
+  Mutation: {
+    addBook: async (parent, args) => {
+      const { input } = args;
+      await Book.create(input);
+      return { ok: true };
+    },
+    updateBook: async (parent, { id, input }) => {
+      await Book.update(input, {
+        where: { id },
+      });
+      return { ok: true };
     },
   },
 };
