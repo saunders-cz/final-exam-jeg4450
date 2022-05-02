@@ -36,7 +36,7 @@ export const MealTable = () => {
       getActions: (params) => [
         <GridActionsCellItem
           icon={<Icon>edit</Icon>}
-          onClick={() => navigate(`/meals/${params.row.id}`)}
+          onClick={() => navigate(`/admin/food/${params.row.id}`)}
           label="Edit"
         />,
       ],

@@ -1,53 +1,17 @@
-import React, { useState } from "react";
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Grid,
-  Typography,
-} from "@mui/material";
-import { MealTable } from "../modules/meal/MealTable";
-import { useNavigate, useParams } from "react-router-dom";
-import { EditMeal } from "../modules/meal/EditMeal";
-import { AddMeal } from "../modules/meal/AddMeal";
+import React from "react";
 
 export const Home = () => {
-  const navigate = useNavigate();
-  const params = useParams();
-  const [showAddMeal, setShowAddMeal] = useState(false);
-
-  const showEditMeal = params.id !== undefined;
-
   return (
     <>
-      <Grid container direction="column">
-        <Grid item>
-          <Typography variant="h2">Meals</Typography>
-        </Grid>
-        <Grid item>
-          <Button onClick={() => setShowAddMeal(true)}>Add Meal</Button>
-        </Grid>
-        <Grid item>
-          <MealTable />
-        </Grid>
-      </Grid>
-      {showEditMeal && (
-        <Dialog open={true} onClose={() => navigate("/")}>
-          <DialogTitle />
-          <DialogContent>
-            <EditMeal onClose={() => navigate("/")} />
-          </DialogContent>
-        </Dialog>
-      )}
-      {showAddMeal && (
-        <Dialog open={true} onClose={() => setShowAddMeal(false)}>
-          <DialogTitle />
-          <DialogContent>
-            <AddMeal onClose={() => setShowAddMeal(false)} />
-          </DialogContent>
-        </Dialog>
-      )}
+      <h1>Cool Whips</h1>
+      <p>
+        Cool Whips is a resturant that is happy to serve car themed frozen
+        deserts to our car obsessed customers. We offer ice cream and frozen
+        drinks 24 hours a day, 365 days a year. We are happy to be the number
+        one car themed resturant in the city, and host weekly Cool Whips™ Car
+        Meets.
+      </p>
+      <img src="../../img/style1.png" width="1000px" />
     </>
   );
 };
