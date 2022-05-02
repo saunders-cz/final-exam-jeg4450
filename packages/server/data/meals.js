@@ -14,7 +14,7 @@ export const meals = [
     categoryId: 1,
     description:
       "We offer our famous iced coffee in full-caf, half-caf, and decaf varieties.",
-    price: 14.85,
+    price: 3.49,
   },
   {
     id: 3,
@@ -23,7 +23,7 @@ export const meals = [
     categoryId: 1,
     description:
       "Order one of our milkshakes in vanilla, chocolate, or strawberry.",
-    price: 14.85,
+    price: 5.0,
   },
   {
     id: 4,

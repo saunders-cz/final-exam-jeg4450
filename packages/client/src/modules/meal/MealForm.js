@@ -1,8 +1,10 @@
+import { useMutation } from "@apollo/client";
 import { Button, Grid, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import React from "react";
 import * as yup from "yup";
 import { SelectCategory } from "../category/SelectCategory";
+import { ADD_MEAL, UPDATE_MEAL } from "./mutations";
 
 const fieldStyle = { width: 500 };
 
@@ -14,6 +16,15 @@ const validationSchema = yup.object({
 });
 
 export const MealForm = ({ id, initialValues, onClose }) => {
+  const mutation = id !== undefined ? UPDATE_MEAL : ADD_MEAL;
+
+  const [saveMeal, { loading, error }] = useMutation(mutation, {
+    refetchQueries: ["GET_MEALS", "GET_MEAL"],
+    onCompleted: () => {
+      if (onClose !== undefined) onClose();
+    },
+  });
+
   const {
     values,
     errors,
@@ -27,6 +38,18 @@ export const MealForm = ({ id, initialValues, onClose }) => {
     onSubmit: async (values) => {
       console.log(`Meal ID: ${id}`);
       console.log("Values:", values);
+
+      const { title, description, imgsrc, categoryId, price } = values;
+      const input = { title, description, imgsrc, categoryId, price };
+
+      console.log(input);
+
+      await saveMeal({
+        variables: {
+          id,
+          input,
+        },
+      });
     },
   });
 
@@ -99,13 +122,22 @@ export const MealForm = ({ id, initialValues, onClose }) => {
             helperText={errors.categoryId}
           />
         </Grid>
+        {error && (
+          <Grid item>
+            <Typography>Error: {error.message}</Typography>
+          </Grid>
+        )}
 
         <Grid item container spacing={2}>
           <Grid item>
-            <Button type="reset">Reset</Button>
+            <Button type="reset" disabled={loading}>
+              Reset
+            </Button>
           </Grid>
           <Grid item>
-            <Button type="submit">Save</Button>
+            <Button type="submit" disabled={loading}>
+              Save
+            </Button>
           </Grid>
         </Grid>
       </Grid>

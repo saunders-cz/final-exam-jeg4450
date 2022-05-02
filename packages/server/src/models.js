@@ -1,4 +1,4 @@
-import { Model, DataTypes } from "sequelize";
+import { Model, DataTypes, BOOLEAN } from "sequelize";
 import { dbConnection } from "./connection.js";
 import { meals, categories } from "../data/meals.js";
 
@@ -43,6 +43,26 @@ Category.init(
   }
 );
 
+class User extends Model {}
+
+User.init(
+  {
+    id: { type: INTEGER, autoIncrement: true, primaryKey: true },
+    firstName: { type: STRING, allowNull: false },
+    lastName: { type: STRING, allowNull: false },
+    address: { type: STRING, allowNull: false },
+    email: { type: STRING, allowNull: false },
+    newsletter: { type: BOOLEAN, allowNull: false },
+  },
+  {
+    sequelize: dbConnection,
+    name: {
+      singular: "user",
+      plural: "users",
+    },
+  }
+);
+
 // Define our associations
 Meal.belongsTo(Category);
 Category.hasMany(Meal);
@@ -58,4 +78,4 @@ await Meal.bulkCreate(
   })
 );
 
-export { Meal, Category };
+export { Meal, Category, User };
